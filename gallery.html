@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <title>RXBL SOCIETY - Gallery</title>
+    <style>
+        .gallery-container {
+            padding: 50px 0;
+        }
+
+        .gallery-section h3 {
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .gallery-item {
+            text-align: center;
+        }
+
+        .gallery-item img {
+            max-width: 100%;
+            height: auto;
+            transition: transform 0.3s ease-in-out;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .gallery-item img:hover {
+            transform: scale(1.05);
+        }
+
+        .item-info {
+            margin-top: 10px;
+        }
+
+        .item-info h4,
+        .item-info p {
+            margin: 0;
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .item-info p {
+            color: #555;
+        }
+
+        .old-price {
+            text-decoration: line-through;
+            color: #999;
+        }
+
+        .form-group {
+            margin-top: 10px;
+        }
+
+        .form-control {
+            width: auto;
+            display: inline-block;
+        }
+
+        .g-4 > .col {
+            padding-bottom: 30px;
+        }
+
+        /* Navbar styles */
+        nav {
+            background-color: #000;
+        }
+
+        nav a {
+            color: #fff;
+            transition: color 0.3s ease-in-out;
+        }
+
+        nav a.active {
+            color: #ccc;
+        }
+
+        nav a:hover {
+            color: #ccc;
+        }
+
+        .cart-icon {
+            font-size: 1.5rem;
+            color: #fff;
+            margin-left: 15px;
+            position: relative;
+        }
+
+        .cart-icon .badge {
+            position: absolute;
+            top: -5px;
+            right: -10px;
+            background-color: red;
+            color: white;
+            font-size: 0.8rem;
+        }
+
+        /* Cart Styles */
+        .cart-dropdown {
+            position: absolute;
+            top: 50px;
+            right: 0;
+            background-color: white;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            width: 250px;
+            z-index: 1000;
+            box-shadow: 0px 4px 8px rgba(0,0,0,0.1);
+            display: none;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px 0;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .cart-item p {
+            margin: 0;
+            font-size: 0.9rem;
+        }
+
+        .remove-btn {
+            color: red;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+
+        .checkout-btn {
+            margin-top: 10px;
+            width: 100%;
+            padding: 8px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            cursor: pointer;
+        }
+
+        .checkout-btn:hover {
+            background-color: #218838;
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark p-2">
+        <div class="container">
+            <a href="index.html" class="navbar-brand"><h1>RXBL</h1></a>
+            <button 
+                class="navbar-toggler"
+                type="button" 
+                data-bs-toggle="collapse" 
+                data-bs-target="#navmenu">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navmenu">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a href="index.html" class="nav-link">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="gallery.html" class="nav-link active">Gallery</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="contactme.html" class="nav-link">Contact</a>
+                    </li>
+                    <li class="nav-item position-relative">
+                        <a href="#" class="nav-link cart-icon" id="cartButton">
+                            <i class="bi bi-cart">
+                                <span class="badge bg-danger">0</span>
+                            </i>
+                        </a>
+                        <div class="cart-dropdown" id="cartDropdown">
+                            <div id="cartItems"></div>
+                            <button class="checkout-btn" id="checkoutBtn">Submit Order</button>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div> 
+    </nav>
+
+    <!-- Gallery Section -->
+    <div class="container gallery-container">
+        <!-- Shirts Section -->
+        <div class="gallery-section">
+            <h3>Shirts</h3>
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-4">
+                <div class="col">
+                    <div class="gallery-item">
+                        <img src="pictures/shirt1.jpg" alt="Shirt 1">
+                        <div class="item-info">
+                            <h4>Shirt 1</h4>
+                            <p><span class="old-price">R250</span> R150</p>
+                        </div>
+                        <div class="form-group">
+                            <label for="size1">Size:</label>
+                            <select class="form-control" id="size1">
+                                <option>Small</option>
+                                <option>Medium</option>
+                                <option>Large</option>
+                                <option>XL</option>
+                            </select>
+                        </div>
+                        <button class="btn btn-primary mt-3 add-to-cart" data-item="Shirt 1" data-price="150" data-size="size1">Add to Cart</button>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="gallery-item">
+                        <img src="pictures/shirt2.jpg" alt="Shirt 2">
+                        <div class="item-info">
+                            <h4>Shirt 2</h4>
+                            <p><span class="old-price">R250</span> R150</p>
+                        </div>
+                        <div class="form-group">
+                            <label for="size2">Size:</label>
+                            <select class="form-control" id="size2">
+                                <option>Small</option>
+                                <option>Medium</option>
+                                <option>Large</option>
+                                <option>XL</option>
+                            </select>
+                        </div>
+                        <button class="btn btn-primary mt-3 add-to-cart" data-item="Shirt 2" data-price="150" data-size="size2">Add to Cart</button>
+                    </div>
+                </div>
+                <!-- Add all other shirts in a similar manner -->
+            </div>
+        </div>
+
+        <!-- Hoodies Section -->
+        <div class="gallery-section">
+            <h3>Hoodies</h3>
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-4">
+                <div class="col">
+                    <div class="gallery-item">
+                        <img src="pictures/hoodie1.jpg" alt="Hoodie 1">
+                        <div class="item-info">
+                            <h4>Hoodie 1</h4>
+                            <p>R500</p>
+                        </div>
+                        <div class="form-group">
+                            <label for="size5">Size:</label>
+                            <select class="form-control" id="size5">
+                                <option>Small</option>
+                                <option>Medium</option>
+                                <option>Large</option>
+                                <option>XL</option>
+                            </select>
+                        </div>
+                        <button class="btn btn-primary mt-3 add-to-cart" data-item="Hoodie 1" data-price="500" data-size="size5">Add to Cart</button>
+                    </div>
+                </div>
+                <!-- Add all other hoodies in a similar manner -->
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Script for Add to Cart and Cart Dropdown -->
+    <script>
+        let cart = [];
+
+        // Handle adding items to cart
+        document.querySelectorAll('.add-to-cart').forEach(button => {
+            button.addEventListener('click', function() {
+                const item = this.getAttribute('data-item');
+                const price = this.getAttribute('data-price');
+                const sizeId = this.getAttribute('data-size');
+                const size = document.getElementById(sizeId).value;
+
+                cart.push({ item, price, size });
+                document.querySelector('.badge').textContent = cart.length;
+            });
+        });
+
+        // Display cart items when clicking the cart icon
+        document.getElementById('cartButton').addEventListener('click', function() {
+            const cartDropdown = document.getElementById('cartDropdown');
+            const cartItemsContainer = document.getElementById('cartItems');
+            cartItemsContainer.innerHTML = ''; // Clear existing items
+
+            cart.forEach((item, index) => {
+                const cartItemDiv = document.createElement('div');
+                cartItemDiv.classList.add('cart-item');
+                cartItemDiv.innerHTML = `
+                    <p>${item.item} - Size: ${item.size}, Price: R${item.price}</p>
+                    <span class="remove-btn" onclick="removeCartItem(${index})">Remove</span>`;
+                cartItemsContainer.appendChild(cartItemDiv);
+            });
+
+            // Toggle cart dropdown
+            cartDropdown.style.display = cartDropdown.style.display === 'block' ? 'none' : 'block';
+        });
+
+        // Function to remove item from cart
+        function removeCartItem(index) {
+            cart.splice(index, 1);
+            document.querySelector('.badge').textContent = cart.length;
+            displayCartItems();
+        }
+
+        // Function to handle checkout via WhatsApp
+        document.getElementById('checkoutBtn').addEventListener('click', function() {
+            if (cart.length === 0) {
+                alert('Your cart is empty!');
+                return;
+            }
+
+            let message = 'Order Summary:\n';
+            cart.forEach((item, index) => {
+                message += `${index + 1}. ${item.item} - Size: ${item.size}, Price: R${item.price}\n`;
+            });
+
+            const whatsappUrl = `https://api.whatsapp.com/send?phone=27815545050&text=${encodeURIComponent(message)}`;
+            window.open(whatsappUrl, '_blank');
+        });
+
+    </script>
+</body>
+</html>
