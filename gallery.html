@@ -14,48 +14,48 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            background: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f5f5;
             padding-top: 80px;
         }
 
         /* Navbar */
         .navbar {
             background: #1a1a1a !important;
-            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
-            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
 
         .navbar-brand {
             font-weight: 700;
             font-size: 1.5rem;
+            color: white !important;
         }
 
         .nav-link {
+            color: white !important;
             font-weight: 500;
-            transition: color 0.3s ease;
         }
 
         .nav-link:hover {
             color: #ff6b6b !important;
         }
 
-        /* Page Header */
-        .page-header {
+        /* Page Title */
+        .page-title {
             text-align: center;
-            margin-bottom: 3rem;
-            padding-bottom: 1rem;
-            border-bottom: 3px solid #ff6b6b;
-            display: inline-block;
+            margin-bottom: 40px;
+            font-weight: 700;
+            color: #1a1a1a;
         }
 
-        /* Professional Product Card */
+        /* Product Card - DOES NOT CROP IMAGES */
         .product-card {
             background: white;
             border-radius: 12px;
             overflow: hidden;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            margin-bottom: 30px;
             height: 100%;
             display: flex;
             flex-direction: column;
@@ -63,34 +63,33 @@
 
         .product-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
         }
 
-        /* Image Container - Preserves quality */
-        .image-container {
-            position: relative;
-            overflow: hidden;
-            background: #f5f5f5;
-            height: 300px;
+        /* Image wrapper - preserves full image without cropping */
+        .image-wrapper {
+            background: #f8f9fa;
+            padding: 20px;
+            text-align: center;
+            height: 320px;
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
         .product-img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.4s ease;
-        }
-
-        .product-card:hover .product-img {
-            transform: scale(1.05);
+            max-width: 100%;
+            max-height: 280px;
+            width: auto;
+            height: auto;
+            object-fit: contain;
+            display: block;
+            margin: 0 auto;
         }
 
         /* Card Body */
         .card-body {
-            padding: 1.5rem;
+            padding: 20px;
             flex: 1;
             display: flex;
             flex-direction: column;
@@ -99,7 +98,7 @@
         .product-title {
             font-size: 1.1rem;
             font-weight: 600;
-            margin-bottom: 0.5rem;
+            margin-bottom: 8px;
             color: #1a1a1a;
         }
 
@@ -107,53 +106,51 @@
             font-size: 1.3rem;
             font-weight: 700;
             color: #ff6b6b;
-            margin-bottom: 1rem;
+            margin-bottom: 15px;
         }
 
         /* Size Selector */
         .size-select {
             width: 100%;
-            padding: 8px 12px;
-            border: 1px solid #e0e0e0;
+            padding: 10px;
+            border: 1px solid #ddd;
             border-radius: 8px;
+            margin-bottom: 15px;
             font-size: 0.9rem;
-            margin-bottom: 1rem;
             background: white;
-            transition: all 0.3s ease;
         }
 
         .size-select:focus {
             outline: none;
             border-color: #ff6b6b;
-            box-shadow: 0 0 0 3px rgba(255,107,107,0.1);
         }
 
         /* Add to Cart Button */
-        .add-to-cart-btn {
+        .add-to-cart {
             background: #1a1a1a;
             color: white;
             border: none;
             padding: 10px;
             border-radius: 8px;
             font-weight: 600;
-            transition: all 0.3s ease;
+            cursor: pointer;
+            transition: background 0.3s ease;
             width: 100%;
         }
 
-        .add-to-cart-btn:hover {
+        .add-to-cart:hover {
             background: #ff6b6b;
-            transform: translateY(-2px);
         }
 
         /* Cart Drawer */
         .cart-drawer {
             position: fixed;
             top: 0;
-            right: -450px;
-            width: 400px;
+            right: -400px;
+            width: 380px;
             height: 100%;
             background: white;
-            box-shadow: -5px 0 30px rgba(0,0,0,0.15);
+            box-shadow: -2px 0 20px rgba(0,0,0,0.15);
             transition: 0.3s ease;
             z-index: 1050;
             padding: 20px;
@@ -168,7 +165,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 2px solid #f0f0f0;
+            border-bottom: 2px solid #eee;
             padding-bottom: 15px;
             margin-bottom: 20px;
         }
@@ -178,30 +175,21 @@
             border: none;
             font-size: 28px;
             cursor: pointer;
-            transition: color 0.3s ease;
-        }
-
-        #closeCartBtn:hover {
-            color: #ff6b6b;
         }
 
         .cart-item {
             background: #f8f9fa;
             padding: 12px;
-            margin-bottom: 10px;
             border-radius: 8px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            margin-bottom: 10px;
         }
 
         .cart-item-info {
-            flex: 1;
+            margin-bottom: 8px;
         }
 
-        .cart-item-title {
+        .cart-item-name {
             font-weight: 600;
-            margin-bottom: 5px;
         }
 
         .cart-item-details {
@@ -209,25 +197,20 @@
             color: #666;
         }
 
-        .quantity-control {
+        .cart-item-quantity {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
+            margin-top: 8px;
         }
 
-        .quantity-btn {
-            background: #e0e0e0;
+        .qty-btn {
+            background: #ddd;
             border: none;
             width: 28px;
             height: 28px;
             border-radius: 6px;
             cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .quantity-btn:hover {
-            background: #ff6b6b;
-            color: white;
         }
 
         .remove-item {
@@ -236,27 +219,25 @@
             border: none;
             padding: 5px 12px;
             border-radius: 6px;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .remove-item:hover {
-            background: #c82333;
+            margin-top: 8px;
         }
 
         /* Footer */
         .footer {
             background: #1a1a1a;
             color: white;
-            padding: 3rem 0 2rem;
-            margin-top: 4rem;
+            text-align: center;
+            padding: 40px 0 20px;
+            margin-top: 60px;
         }
 
         .social-links a {
             color: white;
-            transition: all 0.3s ease;
+            margin: 0 12px;
             display: inline-block;
+            transition: transform 0.3s ease;
         }
 
         .social-links a:hover {
@@ -264,12 +245,12 @@
             transform: translateY(-3px);
         }
 
+        /* Scroll Top Button */
         #scrollTopBtn {
             position: fixed;
             bottom: 30px;
             right: 30px;
             display: none;
-            z-index: 99;
             width: 45px;
             height: 45px;
             border-radius: 50%;
@@ -277,12 +258,7 @@
             color: white;
             border: none;
             cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        #scrollTopBtn:hover {
-            background: #ff5252;
-            transform: translateY(-2px);
+            z-index: 100;
         }
 
         /* Responsive */
@@ -290,12 +266,12 @@
             body {
                 padding-top: 70px;
             }
+            .image-wrapper {
+                height: 250px;
+            }
             .cart-drawer {
                 width: 100%;
                 right: -100%;
-            }
-            .image-container {
-                height: 250px;
             }
         }
     </style>
@@ -320,26 +296,22 @@
     </div>
 </nav>
 
-<!-- Gallery Section -->
+<!-- Gallery Container -->
 <div class="container">
-    <div class="row justify-content-center">
-        <div class="col-12 text-center">
-            <h1 class="page-header">Our Collection</h1>
-        </div>
-    </div>
-    <div class="row g-4" id="productGallery">
-        <!-- Products loaded here -->
+    <h1 class="page-title">Our Tie-Dye Collection</h1>
+    <div class="row" id="productGallery">
+        <!-- Products will be loaded here -->
     </div>
 </div>
 
 <!-- Cart Drawer -->
 <div id="cartDrawer" class="cart-drawer">
     <div class="cart-header">
-        <h4>Shopping Cart</h4>
+        <h4>Your Cart</h4>
         <button id="closeCartBtn">&times;</button>
     </div>
-    <div id="cartItems"></div>
-    <div id="cartTotalContainer" style="margin-top: 20px; padding-top: 20px; border-top: 2px solid #f0f0f0;">
+    <div id="cartItemsContainer"></div>
+    <div style="margin-top: 20px; padding-top: 15px; border-top: 2px solid #eee;">
         <h5>Total: R<span id="cartTotal">0</span></h5>
         <button id="checkoutBtn" class="btn btn-success w-100 mt-3">Order on WhatsApp</button>
         <button id="clearCartBtn" class="btn btn-secondary w-100 mt-2">Clear Cart</button>
@@ -349,17 +321,13 @@
 <!-- Footer -->
 <footer class="footer">
     <div class="container">
-        <div class="row">
-            <div class="col-12 text-center">
-                <div class="social-links mb-4">
-                    <a href="https://instagram.com" target="_blank" class="mx-3"><i class="fab fa-instagram fa-2x"></i></a>
-                    <a href="https://twitter.com" target="_blank" class="mx-3"><i class="fab fa-twitter fa-2x"></i></a>
-                    <a href="https://facebook.com" target="_blank" class="mx-3"><i class="fab fa-facebook fa-2x"></i></a>
-                    <a href="https://wa.me/277698858845" target="_blank" class="mx-3"><i class="fab fa-whatsapp fa-2x"></i></a>
-                </div>
-                <p class="copyright mb-0">&copy; 2025 Rxblsociety. All rights reserved.</p>
-            </div>
+        <div class="social-links mb-3">
+            <a href="https://instagram.com" target="_blank"><i class="fab fa-instagram fa-2x"></i></a>
+            <a href="https://twitter.com" target="_blank"><i class="fab fa-twitter fa-2x"></i></a>
+            <a href="https://facebook.com" target="_blank"><i class="fab fa-facebook fa-2x"></i></a>
+            <a href="https://wa.me/277698858845" target="_blank"><i class="fab fa-whatsapp fa-2x"></i></a>
         </div>
+        <p>&copy; 2025 Rxblsociety. All rights reserved.</p>
     </div>
 </footer>
 
@@ -367,7 +335,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-    // Products Database
+    // PRODUCTS - Using your exact image files
     const products = [
         { id: 1, name: "Tie-Dye T-Shirt 1", price: 250, image: "pictures/shirt1.jpg" },
         { id: 2, name: "Tie-Dye T-Shirt 2", price: 250, image: "pictures/shirt2.jpg" },
@@ -382,28 +350,28 @@
     // Cart array
     let cart = JSON.parse(localStorage.getItem('rxblCart')) || [];
 
-    // Save cart
+    // Save cart to localStorage
     function saveCart() {
         localStorage.setItem('rxblCart', JSON.stringify(cart));
-        updateCartUI();
+        updateCartDisplay();
     }
 
     // Update cart UI
-    function updateCartUI() {
-        // Update cart count
-        const cartCount = document.getElementById('cartCount');
-        if (cartCount) {
+    function updateCartDisplay() {
+        // Update cart count in navbar
+        const cartCountSpan = document.getElementById('cartCount');
+        if (cartCountSpan) {
             const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-            cartCount.innerText = totalItems;
+            cartCountSpan.innerText = totalItems;
         }
 
-        // Update cart drawer
-        const cartItemsDiv = document.getElementById('cartItems');
+        // Update cart drawer contents
+        const cartItemsContainer = document.getElementById('cartItemsContainer');
         const cartTotalSpan = document.getElementById('cartTotal');
         
-        if (cartItemsDiv && cartTotalSpan) {
+        if (cartItemsContainer && cartTotalSpan) {
             if (cart.length === 0) {
-                cartItemsDiv.innerHTML = '<div class="text-center text-muted py-5">Your cart is empty</div>';
+                cartItemsContainer.innerHTML = '<div class="text-center text-muted py-4">Your cart is empty</div>';
                 cartTotalSpan.innerText = '0';
                 return;
             }
@@ -418,24 +386,24 @@
                 html += `
                     <div class="cart-item">
                         <div class="cart-item-info">
-                            <div class="cart-item-title">${item.name}</div>
-                            <div class="cart-item-details">Size: ${item.size} | R${item.price}</div>
-                            <div class="quantity-control mt-2">
-                                <button class="quantity-btn" data-index="${index}" data-change="-1">-</button>
-                                <span style="min-width: 30px; text-align: center;">${item.quantity}</span>
-                                <button class="quantity-btn" data-index="${index}" data-change="1">+</button>
-                            </div>
+                            <div class="cart-item-name">${item.name}</div>
+                            <div class="cart-item-details">Size: ${item.size} | R${item.price} each</div>
                         </div>
-                        <button class="remove-item" data-index="${index}">Remove</button>
+                        <div class="cart-item-quantity">
+                            <button class="qty-btn" data-index="${index}" data-change="-1">-</button>
+                            <span>${item.quantity}</span>
+                            <button class="qty-btn" data-index="${index}" data-change="1">+</button>
+                            <button class="remove-item" data-index="${index}">Remove</button>
+                        </div>
                     </div>
                 `;
             });
             
-            cartItemsDiv.innerHTML = html;
+            cartItemsContainer.innerHTML = html;
             cartTotalSpan.innerText = total;
             
             // Add event listeners for quantity buttons
-            document.querySelectorAll('.quantity-btn').forEach(btn => {
+            document.querySelectorAll('.qty-btn').forEach(btn => {
                 btn.addEventListener('click', function() {
                     const idx = parseInt(this.getAttribute('data-index'));
                     const change = parseInt(this.getAttribute('data-change'));
@@ -461,10 +429,10 @@
         }
     }
 
-    // Add to cart
+    // Add to cart function
     function addToCart(product, size) {
         if (!size) {
-            alert('Please select a size');
+            alert('⚠️ Please select a size');
             return false;
         }
         
@@ -486,8 +454,8 @@
         return true;
     }
 
-    // Render products
-    function renderProducts() {
+    // Render all products to gallery
+    function renderGallery() {
         const gallery = document.getElementById('productGallery');
         if (!gallery) return;
         
@@ -495,11 +463,11 @@
         
         products.forEach(product => {
             const col = document.createElement('div');
-            col.className = 'col-md-3 col-sm-6';
+            col.className = 'col-lg-3 col-md-4 col-sm-6';
             col.innerHTML = `
                 <div class="product-card">
-                    <div class="image-container">
-                        <img src="${product.image}" class="product-img" alt="${product.name}" loading="lazy">
+                    <div class="image-wrapper">
+                        <img src="${product.image}" class="product-img" alt="${product.name}" onerror="this.src='https://via.placeholder.com/300x300?text=Image+Missing'">
                     </div>
                     <div class="card-body">
                         <h3 class="product-title">${product.name}</h3>
@@ -511,26 +479,26 @@
                             <option value="L">Large (L)</option>
                             <option value="XL">Extra Large (XL)</option>
                         </select>
-                        <button class="add-to-cart-btn">Add to Cart</button>
+                        <button class="add-to-cart">Add to Cart</button>
                     </div>
                 </div>
             `;
             
-            const select = col.querySelector('.size-select');
-            const button = col.querySelector('.add-to-cart-btn');
+            const sizeSelect = col.querySelector('.size-select');
+            const addBtn = col.querySelector('.add-to-cart');
             
-            button.addEventListener('click', () => {
-                addToCart(product, select.value);
+            addBtn.addEventListener('click', () => {
+                addToCart(product, sizeSelect.value);
             });
             
             gallery.appendChild(col);
         });
     }
 
-    // Checkout
+    // Checkout function
     function checkout() {
         if (cart.length === 0) {
-            alert('Your cart is empty');
+            alert('Your cart is empty!');
             return;
         }
         
@@ -540,21 +508,20 @@
         cart.forEach(item => {
             const itemTotal = item.price * item.quantity;
             total += itemTotal;
-            message += `• ${item.name} (${item.size}) x${item.quantity} = R${itemTotal}\n`;
+            message += `• ${item.name} (Size: ${item.size}) x${item.quantity} = R${itemTotal}\n`;
         });
         
         message += `\n*TOTAL: R${total}*`;
         message += `\n\nPlease confirm my order. Thank you!`;
         
         const whatsappUrl = `https://wa.me/277698858845?text=${encodeURIComponent(message)}`;
-        window.open(wh
-            atsappUrl, '_blank');
+        window.open(whatsappUrl, '_blank');
     }
 
-    // Initialize
+    // Initialize everything
     document.addEventListener('DOMContentLoaded', () => {
-        renderProducts();
-        updateCartUI();
+        renderGallery();
+        updateCartDisplay();
         
         // Cart drawer controls
         const cartIcon = document.getElementById('cartIcon');
@@ -590,7 +557,7 @@
             });
         }
         
-        // Scroll to top
+        // Scroll to top button
         const scrollBtn = document.getElementById('scrollTopBtn');
         window.addEventListener('scroll', () => {
             if (window.scrollY > 300) {
