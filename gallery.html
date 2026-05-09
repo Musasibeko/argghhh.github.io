@@ -1,663 +1,111 @@
+<!-- gallery.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RXBL - Gallery</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+    <title>Gallery | Argghhh</title>
 
-        body {
-            background: #000;
-            color: #fff;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-        }
-
-        /* Navbar */
-        .navbar {
-            background: #000 !important;
-            border-bottom: 1px solid #1a1a1a;
-            padding: 1rem 0;
-        }
-
-        .navbar-brand h1 {
-            font-size: 1.8rem;
-            letter-spacing: 2px;
-            margin: 0;
-            color: #fff;
-        }
-
-        .nav-link {
-            color: #fff !important;
-            margin-left: 1.5rem;
-            font-weight: 500;
-            transition: color 0.3s;
-        }
-
-        .nav-link:hover, .nav-link.active {
-            color: #f8b400 !important;
-        }
-
-        /* Cart Icon */
-        .cart-wrapper {
-            position: relative;
-            margin-left: 1.5rem;
-        }
-
-        .cart-icon {
-            cursor: pointer;
-            font-size: 1.5rem;
-            color: #fff;
-            transition: color 0.3s;
-        }
-
-        .cart-icon:hover {
-            color: #f8b400;
-        }
-
-        .cart-badge {
-            position: absolute;
-            top: -10px;
-            right: -12px;
-            background: #f8b400;
-            color: #000;
-            font-size: 0.7rem;
-            font-weight: bold;
-            padding: 2px 6px;
-            border-radius: 50%;
-            min-width: 20px;
-            text-align: center;
-        }
-
-        /* Cart Dropdown */
-        .cart-dropdown {
-            position: absolute;
-            right: 0;
-            top: 40px;
-            width: 320px;
-            background: #111;
-            border: 1px solid #2a2a2a;
-            border-radius: 12px;
-            padding: 1rem;
-            display: none;
-            z-index: 1000;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
-
-        .cart-dropdown h6 {
-            color: #f8b400;
-            margin-bottom: 1rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 1px solid #2a2a2a;
-        }
-
-        .cart-item {
-            padding: 0.75rem 0;
-            border-bottom: 1px solid #1a1a1a;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .cart-item-info {
-            flex: 1;
-        }
-
-        .cart-item-name {
-            font-size: 0.85rem;
-            font-weight: 500;
-        }
-
-        .cart-item-price {
-            font-size: 0.8rem;
-            color: #f8b400;
-        }
-
-        .remove-item {
-            color: #ff5555;
-            cursor: pointer;
-            font-size: 0.75rem;
-            transition: opacity 0.2s;
-        }
-
-        .remove-item:hover {
-            opacity: 0.7;
-        }
-
-        .empty-cart {
-            text-align: center;
-            color: #666;
-            padding: 1rem;
-            font-size: 0.85rem;
-        }
-
-        .checkout-btn {
-            background: #25D366;
-            color: #fff;
-            font-weight: bold;
-            width: 100%;
-            padding: 0.75rem;
-            border: none;
-            border-radius: 8px;
-            margin-top: 1rem;
-            transition: background 0.3s;
-        }
-
-        .checkout-btn:hover {
-            background: #128C7E;
-        }
-
-        /* Section Headers */
-        .section-header {
-            text-align: center;
-            margin: 3rem 0 2rem;
-        }
-
-        .section-header span {
-            background: #f8b400;
-            color: #000;
-            font-size: 1.3rem;
-            font-weight: bold;
-            padding: 0.5rem 2rem;
-            border-radius: 40px;
-            letter-spacing: 1px;
-        }
-
-        /* Product Cards - PROFESSIONAL & CLEAN */
-        .product-card {
-            background: #0a0a0a;
-            border: 1px solid #1a1a1a;
-            border-radius: 16px;
-            overflow: hidden;
-            transition: all 0.3s ease;
-            margin-bottom: 1.5rem;
-        }
-
-        .product-card:hover {
-            transform: translateY(-5px);
-            border-color: #f8b400;
-            box-shadow: 0 8px 25px rgba(248, 180, 0, 0.15);
-        }
-
-        .image-container {
-            width: 100%;
-            height: 300px;
-            overflow: hidden;
-            background: #0a0a0a;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .product-img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.4s ease;
-        }
-
-        .product-card:hover .product-img {
-            transform: scale(1.04);
-        }
-
-        .product-info {
-            padding: 1.25rem;
-        }
-
-        .product-title {
-            font-size: 1rem;
-            font-weight: 600;
-            margin-bottom: 0.25rem;
-            color: #fff;
-        }
-
-        .product-price {
-            color: #f8b400;
-            font-size: 1.2rem;
-            font-weight: bold;
-            margin: 0.5rem 0;
-        }
-
-        .size-select {
-            background: #1a1a1a;
-            color: #fff;
-            border: 1px solid #2a2a2a;
-            border-radius: 8px;
-            padding: 0.5rem;
-            width: 100%;
-            margin: 0.75rem 0;
-            font-size: 0.85rem;
-            cursor: pointer;
-        }
-
-        .size-select:focus {
-            outline: none;
-            border-color: #f8b400;
-        }
-
-        .add-to-cart {
-            background: #f8b400;
-            color: #000;
-            font-weight: bold;
-            border: none;
-            padding: 0.7rem;
-            width: 100%;
-            border-radius: 8px;
-            transition: all 0.2s;
-            font-size: 0.9rem;
-        }
-
-        .add-to-cart:hover {
-            background: #e0a800;
-            transform: scale(1.02);
-        }
-
-        /* Footer */
-        footer {
-            background: #000;
-            border-top: 1px solid #1a1a1a;
-            padding: 1.5rem;
-            text-align: center;
-            margin-top: 3rem;
-        }
-
-        footer p {
-            color: #666;
-            font-size: 0.85rem;
-            margin: 0;
-        }
-
-        footer a {
-            color: #666;
-            margin: 0 0.5rem;
-            font-size: 1.1rem;
-            transition: color 0.3s;
-        }
-
-        footer a:hover {
-            color: #f8b400;
-        }
-
-        /* Up Arrow */
-        .up-arrow {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: #f8b400;
-            color: #000;
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-decoration: none;
-            transition: all 0.3s;
-            z-index: 99;
-        }
-
-        .up-arrow:hover {
-            transform: translateY(-3px);
-            background: #e0a800;
-            color: #000;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .navbar-brand h1 {
-                font-size: 1.3rem;
-            }
-            .nav-link {
-                margin-left: 0.8rem;
-                font-size: 0.9rem;
-            }
-            .image-container {
-                height: 220px;
-            }
-            .section-header span {
-                font-size: 1rem;
-                padding: 0.4rem 1.5rem;
-            }
-            .cart-dropdown {
-                width: 280px;
-                right: -10px;
-            }
-        }
-
-        @media (max-width: 576px) {
-            .image-container {
-                height: 200px;
-            }
-            .product-info {
-                padding: 0.9rem;
-            }
-            .product-title {
-                font-size: 0.9rem;
-            }
-        }
-    </style>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-dark">
-    <div class="container">
-        <a class="navbar-brand" href="index.html"><h1>RXBL</h1></a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navmenu">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navmenu">
-            <ul class="navbar-nav ms-auto align-items-center">
-                <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
-                <li class="nav-item"><a href="gallery.html" class="nav-link active">Gallery</a></li>
-                <li class="nav-item"><a href="contactme.html" class="nav-link">Contact</a></li>
-                <li class="cart-wrapper">
-                    <div class="cart-icon" id="cartIcon">
-                        <i class="bi bi-bag"></i>
-                        <span class="cart-badge" id="cartCount">0</span>
-                    </div>
-                    <div class="cart-dropdown" id="cartDropdown">
-                        <h6><i class="bi bi-bag-check"></i> Your Cart</h6>
-                        <div id="cartItems"></div>
-                        <button id="checkoutBtn" class="checkout-btn"><i class="bi bi-whatsapp me-2"></i>Checkout via WhatsApp</button>
-                    </div>
-                </li>
-            </ul>
-        </div>
-    </div>
-</nav>
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="index.html">ARGGHHH</a>
 
-<!-- Gallery Section -->
-<section class="py-4">
-    <div class="container">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
-        <!-- Hoodies Section -->
-        <div class="section-header">
-            <span>🔥 PREMIUM HOODIES</span>
+            <div class="collapse navbar-collapse" id="navMenu">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Home</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link active" href="gallery.html">Gallery</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="contactme.html">Contact</a>
+                    </li>
+                </ul>
+            </div>
         </div>
+    </nav>
+
+    <!-- TITLE -->
+    <section class="gallery-header">
+        <div class="container text-center">
+            <h1>Gallery</h1>
+            <p>Explore the collection</p>
+        </div>
+    </section>
+
+    <!-- GALLERY -->
+    <section class="container py-5">
         <div class="row g-4">
-            <div class="col-md-6 col-lg-3">
-                <div class="product-card">
-                    <div class="image-container">
-                        <img src="pictures/hoodie1.jpg" class="product-img" alt="Black Hoodie">
-                    </div>
-                    <div class="product-info">
-                        <h5 class="product-title">RXBL Hoodie - Black</h5>
-                        <p class="product-price">R599</p>
-                        <select class="size-select">
-                            <option value="S">Size S</option>
-                            <option value="M">Size M</option>
-                            <option value="L">Size L</option>
-                            <option value="XL">Size XL</option>
-                        </select>
-                        <button class="add-to-cart" data-name="RXBL Hoodie Black" data-price="599">ADD TO CART</button>
-                    </div>
+
+            <div class="col-sm-6 col-md-4 col-lg-3">
+                <div class="gallery-card">
+                    <img src="pictures/pic1.jpg" alt="">
                 </div>
             </div>
-            <div class="col-md-6 col-lg-3">
-                <div class="product-card">
-                    <div class="image-container">
-                        <img src="pictures/hoodie2.jpg" class="product-img" alt="Grey Hoodie">
-                    </div>
-                    <div class="product-info">
-                        <h5 class="product-title">RXBL Hoodie - Grey</h5>
-                        <p class="product-price">R599</p>
-                        <select class="size-select">
-                            <option value="S">Size S</option>
-                            <option value="M">Size M</option>
-                            <option value="L">Size L</option>
-                            <option value="XL">Size XL</option>
-                        </select>
-                        <button class="add-to-cart" data-name="RXBL Hoodie Grey" data-price="599">ADD TO CART</button>
-                    </div>
+
+            <div class="col-sm-6 col-md-4 col-lg-3">
+                <div class="gallery-card">
+                    <img src="pictures/pic2.jpg" alt="">
                 </div>
             </div>
-            <div class="col-md-6 col-lg-3">
-                <div class="product-card">
-                    <div class="image-container">
-                        <img src="pictures/hoodie3.jpg" class="product-img" alt="White Hoodie">
-                    </div>
-                    <div class="product-info">
-                        <h5 class="product-title">RXBL Hoodie - White</h5>
-                        <p class="product-price">R599</p>
-                        <select class="size-select">
-                            <option value="S">Size S</option>
-                            <option value="M">Size M</option>
-                            <option value="L">Size L</option>
-                            <option value="XL">Size XL</option>
-                        </select>
-                        <button class="add-to-cart" data-name="RXBL Hoodie White" data-price="599">ADD TO CART</button>
-                    </div>
+
+            <div class="col-sm-6 col-md-4 col-lg-3">
+                <div class="gallery-card">
+                    <img src="pictures/pic3.jpg" alt="">
                 </div>
             </div>
-            <div class="col-md-6 col-lg-3">
-                <div class="product-card">
-                    <div class="image-container">
-                        <img src="pictures/hoodie4.jpg" class="product-img" alt="Red Hoodie">
-                    </div>
-                    <div class="product-info">
-                        <h5 class="product-title">RXBL Hoodie - Red</h5>
-                        <p class="product-price">R599</p>
-                        <select class="size-select">
-                            <option value="S">Size S</option>
-                            <option value="M">Size M</option>
-                            <option value="L">Size L</option>
-                            <option value="XL">Size XL</option>
-                        </select>
-                        <button class="add-to-cart" data-name="RXBL Hoodie Red" data-price="599">ADD TO CART</button>
-                    </div>
+
+            <div class="col-sm-6 col-md-4 col-lg-3">
+                <div class="gallery-card">
+                    <img src="pictures/pic4.jpg" alt="">
                 </div>
             </div>
+
+            <div class="col-sm-6 col-md-4 col-lg-3">
+                <div class="gallery-card">
+                    <img src="pictures/pic5.jpg" alt="">
+                </div>
+            </div>
+
+            <div class="col-sm-6 col-md-4 col-lg-3">
+                <div class="gallery-card">
+                    <img src="pictures/pic6.jpg" alt="">
+                </div>
+            </div>
+
+            <div class="col-sm-6 col-md-4 col-lg-3">
+                <div class="gallery-card">
+                    <img src="pictures/pic7.jpg" alt="">
+                </div>
+            </div>
+
+            <div class="col-sm-6 col-md-4 col-lg-3">
+                <div class="gallery-card">
+                    <img src="pictures/pic8.jpg" alt="">
+                </div>
+            </div>
+
         </div>
+    </section>
 
-        <!-- Shirts Section -->
-        <div class="section-header">
-            <span>👕 ESSENTIAL TEES</span>
-        </div>
-        <div class="row g-4">
-            <div class="col-md-6 col-lg-3">
-                <div class="product-card">
-                    <div class="image-container">
-                        <img src="pictures/shirt1.jpg" class="product-img" alt="Black Shirt">
-                    </div>
-                    <div class="product-info">
-                        <h5 class="product-title">RXBL T-Shirt - Black</h5>
-                        <p class="product-price">R299</p>
-                        <select class="size-select">
-                            <option value="S">Size S</option>
-                            <option value="M">Size M</option>
-                            <option value="L">Size L</option>
-                            <option value="XL">Size XL</option>
-                        </select>
-                        <button class="add-to-cart" data-name="RXBL Shirt Black" data-price="299">ADD TO CART</button>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6 col-lg-3">
-                <div class="product-card">
-                    <div class="image-container">
-                        <img src="pictures/shirt2.jpg" class="product-img" alt="White Shirt">
-                    </div>
-                    <div class="product-info">
-                        <h5 class="product-title">RXBL T-Shirt - White</h5>
-                        <p class="product-price">R299</p>
-                        <select class="size-select">
-                            <option value="S">Size S</option>
-                            <option value="M">Size M</option>
-                            <option value="L">Size L</option>
-                            <option value="XL">Size XL</option>
-                        </select>
-                        <button class="add-to-cart" data-name="RXBL Shirt White" data-price="299">ADD TO CART</button>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6 col-lg-3">
-                <div class="product-card">
-                    <div class="image-container">
-                        <img src="pictures/shirt3.jpg" class="product-img" alt="Grey Shirt">
-                    </div>
-                    <div class="product-info">
-                        <h5 class="product-title">RXBL T-Shirt - Grey</h5>
-                        <p class="product-price">R299</p>
-                        <select class="size-select">
-                            <option value="S">Size S</option>
-                            <option value="M">Size M</option>
-                            <option value="L">Size L</option>
-                            <option value="XL">Size XL</option>
-                        </select>
-                        <button class="add-to-cart" data-name="RXBL Shirt Grey" data-price="299">ADD TO CART</button>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6 col-lg-3">
-                <div class="product-card">
-                    <div class="image-container">
-                        <img src="pictures/shirt4.jpg" class="product-img" alt="Blue Shirt">
-                    </div>
-                    <div class="product-info">
-                        <h5 class="product-title">RXBL T-Shirt - Blue</h5>
-                        <p class="product-price">R299</p>
-                        <select class="size-select">
-                            <option value="S">Size S</option>
-                            <option value="M">Size M</option>
-                            <option value="L">Size L</option>
-                            <option value="XL">Size XL</option>
-                        </select>
-                        <button class="add-to-cart" data-name="RXBL Shirt Blue" data-price="299">ADD TO CART</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
+    <!-- FOOTER -->
+    <footer class="footer">
+        <p>© 2026 ARGGHHH | Gallery</p>
+    </footer>
 
-<!-- Footer -->
-<footer>
-    <div class="container">
-        <p>Copyright &copy; 2025 RXBL — Streetwear Culture</p>
-        <div>
-            <a href="https://www.facebook.com/winstonmojalefa.thekiso1/" target="_blank"><i class="bi bi-facebook"></i></a>
-            <a href="https://www.instagram.com/winston_mojalefa_thekiso/" target="_blank"><i class="bi bi-instagram"></i></a>
-            <a href="#"><i class="bi bi-twitter"></i></a>
-        </div>
-    </div>
-</footer>
-
-<a href="#" class="up-arrow" id="upArrow"><i class="bi bi-arrow-up"></i></a>
-
-<script>
-    let cart = [];
-
-    function saveCart() {
-        localStorage.setItem('rxblCart', JSON.stringify(cart));
-        updateCartUI();
-    }
-
-    function loadCart() {
-        const saved = localStorage.getItem('rxblCart');
-        if (saved) cart = JSON.parse(saved);
-        updateCartUI();
-    }
-
-    function updateCartUI() {
-        const countSpan = document.getElementById('cartCount');
-        countSpan.textContent = cart.length;
-        
-        const container = document.getElementById('cartItems');
-        if (!container) return;
-        
-        if (cart.length === 0) {
-            container.innerHTML = '<div class="empty-cart">Your cart is empty</div>';
-            return;
-        }
-        
-        container.innerHTML = '';
-        cart.forEach((item, idx) => {
-            container.innerHTML += `
-                <div class="cart-item">
-                    <div class="cart-item-info">
-                        <div class="cart-item-name">${item.name} (${item.size})</div>
-                        <div class="cart-item-price">R${item.price}</div>
-                    </div>
-                    <span class="remove-item" onclick="removeItem(${idx})"><i class="bi bi-trash"></i> Remove</span>
-                </div>
-            `;
-        });
-    }
-
-    function removeItem(index) {
-        cart.splice(index, 1);
-        saveCart();
-    }
-
-    // Add to cart
-    document.querySelectorAll('.add-to-cart').forEach(btn => {
-        btn.addEventListener('click', function() {
-            const card = this.closest('.product-card');
-            const name = this.getAttribute('data-name');
-            const price = this.getAttribute('data-price');
-            const sizeSelect = card.querySelector('.size-select');
-            const size = sizeSelect ? sizeSelect.value : 'M';
-            
-            cart.push({ name, size, price });
-            saveCart();
-            
-            // Feedback
-            const originalText = this.textContent;
-            this.textContent = '✓ ADDED!';
-            setTimeout(() => {
-                this.textContent = originalText;
-            }, 1000);
-        });
-    });
-
-    // Checkout
-    document.getElementById('checkoutBtn')?.addEventListener('click', () => {
-        if (cart.length === 0) {
-            alert('Your cart is empty!');
-            return;
-        }
-        
-        let message = '🛍️ *RXBL ORDER* 🛍️%0A%0A';
-        let total = 0;
-        cart.forEach((item, i) => {
-            message += `${i+1}. ${item.name} (${item.size}) - R${item.price}%0A`;
-            total += Number(item.price);
-        });
-        message += `%0A📦 *TOTAL: R${total}*%0A%0AThank you! 🔥`;
-        
-        window.open(`https://wa.me/27659898845?text=${message}`, '_blank');
-    });
-
-    // Cart dropdown toggle
-    const cartIcon = document.getElementById('cartIcon');
-    const cartDropdown = document.getElementById('cartDropdown');
-    
-    cartIcon?.addEventListener('click', (e) => {
-        e.stopPropagation();
-        cartDropdown.style.display = cartDropdown.style.display === 'block' ? 'none' : 'block';
-    });
-    
-    document.addEventListener('click', (e) => {
-        if (!cartIcon?.contains(e.target) && !cartDropdown?.contains(e.target)) {
-            cartDropdown.style.display = 'none';
-        }
-    });
-
-    // Smooth scroll up
-    document.getElementById('upArrow')?.addEventListener('click', (e) => {
-        e.preventDefault();
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
-
-    loadCart();
-</script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-    </html>
+</html>
