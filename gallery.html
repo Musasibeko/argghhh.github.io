@@ -6,10 +6,28 @@
     <title>Rxblsociety | Gallery</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="style.css">
+    <style>
+        body { padding-top: 70px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        .product-card { transition: transform 0.3s; margin-bottom: 30px; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 8px rgba(0,0,0,0.1); cursor: pointer; }
+        .product-card:hover { transform: translateY(-5px); }
+        .product-img { height: 300px; object-fit: cover; width: 100%; }
+        .size-select { width: 100%; padding: 8px; margin: 10px 0; border-radius: 5px; border: 1px solid #ddd; }
+        #scrollTopBtn { position: fixed; bottom: 30px; right: 30px; display: none; z-index: 99; width: 50px; height: 50px; border-radius: 50%; background-color: #dc3545; color: white; border: none; }
+        #scrollTopBtn:hover { background-color: #bb2d3b; }
+        .cart-drawer { position: fixed; top: 0; right: -450px; width: 400px; height: 100%; background: white; box-shadow: -2px 0 5px rgba(0,0,0,0.2); transition: 0.3s; z-index: 1000; padding: 20px; overflow-y: auto; }
+        .cart-drawer.open { right: 0; }
+        .cart-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #ddd; padding-bottom: 10px; }
+        #closeCartBtn { background: none; border: none; font-size: 30px; cursor: pointer; }
+        .cart-item { display: flex; justify-content: space-between; margin: 15px 0; padding: 10px; border-bottom: 1px solid #eee; }
+        .navbar-brand img { margin-right: 10px; }
+        .hero-section { background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('pictures/logo.PNG'); background-size: cover; background-position: center; height: 60vh; display: flex; align-items: center; justify-content: center; }
+        .btn-primary { background-color: #ff6b6b; border-color: #ff6b6b; }
+        .btn-primary:hover { background-color: #ff5252; border-color: #ff5252; }
+    </style>
 </head>
 <body>
 
+<!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
     <div class="container">
         <a class="navbar-brand" href="index.html">
@@ -30,26 +48,29 @@
     </div>
 </nav>
 
+<!-- Gallery Section -->
 <div class="container mt-5 pt-5">
-    <h1 class="text-center mb-5">Our Tie-Dye Collection</h1>
+    <h1 class="text-center mb-4">Our Tie-Dye Collection</h1>
     <div class="row" id="productGallery">
-        <!-- Products will be loaded dynamically via JavaScript -->
+        <!-- Products will be loaded here -->
     </div>
 </div>
 
 <!-- Cart Drawer -->
 <div id="cartDrawer" class="cart-drawer">
     <div class="cart-header">
-        <h4>Your Cart</h4>
+        <h4>Shopping Cart</h4>
         <button id="closeCartBtn">&times;</button>
     </div>
     <div id="cartItems"></div>
-    <div class="cart-footer">
+    <div class="cart-footer mt-3">
         <p><strong>Total: R<span id="cartTotal">0</span></strong></p>
-        <button id="checkoutBtn" class="btn btn-success w-100">Checkout on WhatsApp</button>
+        <button id="checkoutBtn" class="btn btn-success w-100">Order on WhatsApp</button>
+        <button id="clearCartBtn" class="btn btn-secondary w-100 mt-2">Clear Cart</button>
     </div>
 </div>
 
+<!-- Footer -->
 <footer class="bg-dark text-white text-center py-4 mt-5">
     <div class="container">
         <div class="social-links mb-3">
@@ -62,9 +83,247 @@
     </div>
 </footer>
 
-<button id="scrollTopBtn" class="btn btn-danger rounded-circle"><i class="fas fa-arrow-up"></i></button>
+<!-- Scroll to Top Button -->
+<button id="scrollTopBtn"><i class="fas fa-arrow-up"></i></button>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="style.js"></script>
+<script>
+// PRODUCTS DATABASE - Using YOUR actual image files
+const products = [
+    { id: 1, name: "Tie-Dye T-Shirt 1", price: 250, category: "shirt", image: "pictures/shirt1.jpg" },
+    { id: 2, name: "Tie-Dye T-Shirt 2", price: 250, category: "shirt", image: "pictures/shirt2.jpg" },
+    { id: 3, name: "Tie-Dye T-Shirt 3", price: 250, category: "shirt", image: "pictures/shirt3.jpg" },
+    { id: 4, name: "Tie-Dye T-Shirt 4", price: 250, category: "shirt", image: "pictures/shirt4.jpg" },
+    { id: 5, name: "Tie-Dye Hoodie 1", price: 450, category: "hoodie", image: "pictures/hoodie1.jpg" },
+    { id: 6, name: "Tie-Dye Hoodie 2", price: 450, category: "hoodie", image: "pictures/hoodie2.jpg" },
+    { id: 7, name: "Tie-Dye Hoodie 3", price: 450, category: "hoodie", image: "pictures/hoodie3.jpg" },
+    { id: 8, name: "Tie-Dye Hoodie 4", price: 450, category: "hoodie", image: "pictures/hoodie4.jpg" }
+];
+
+// Cart array
+let cart = JSON.parse(localStorage.getItem('rxblCart')) || [];
+
+// Save cart to localStorage
+function saveCart() {
+    localStorage.setItem('rxblCart', JSON.stringify(cart));
+    updateCartDisplay();
+}
+
+// Update cart UI (count, drawer contents, total)
+function updateCartDisplay() {
+    const cartCountSpan = document.getElementById('cartCount');
+    if (cartCountSpan) {
+        let totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+        cartCountSpan.innerText = totalItems;
+    }
+
+    const cartItemsDiv = document.getElementById('cartItems');
+    const cartTotalSpan = document.getElementById('cartTotal');
+    
+    if (cartItemsDiv && cartTotalSpan) {
+        if (cart.length === 0) {
+            cartItemsDiv.innerHTML = '<p class="text-center text-muted">Your cart is empty</p>';
+            cartTotalSpan.innerText = '0';
+            return;
+        }
+
+        let html = '';
+        let total = 0;
+        cart.forEach((item, index) => {
+            let itemTotal = item.price * item.quantity;
+            total += itemTotal;
+            html += `
+                <div class="cart-item">
+                    <div style="flex: 1;">
+                        <strong>${item.name}</strong><br>
+                        Size: ${item.size}<br>
+                        Price: R${item.price}<br>
+                        Quantity: 
+                        <button class="btn btn-sm btn-outline-secondary qty-btn" data-index="${index}" data-change="-1">-</button>
+                        ${item.quantity}
+                        <button class="btn btn-sm btn-outline-secondary qty-btn" data-index="${index}" data-change="1">+</button>
+                    </div>
+                    <div>
+                        <button class="btn btn-sm btn-danger remove-item" data-index="${index}">Remove</button>
+                    </div>
+                </div>
+            `;
+        });
+        cartItemsDiv.innerHTML = html;
+        cartTotalSpan.innerText = total;
+
+        // Add event listeners for quantity buttons
+        document.querySelectorAll('.qty-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                let idx = parseInt(this.getAttribute('data-index'));
+                let change = parseInt(this.getAttribute('data-change'));
+                let newQty = cart[idx].quantity + change;
+                if (newQty <= 0) {
+                    cart.splice(idx, 1);
+                } else {
+                    cart[idx].quantity = newQty;
+                }
+                saveCart();
+            });
+        });
+
+        // Add remove button listeners
+        document.querySelectorAll('.remove-item').forEach(btn => {
+            btn.addEventListener('click', function() {
+                let idx = parseInt(this.getAttribute('data-index'));
+                cart.splice(idx, 1);
+                saveCart();
+            });
+        });
+    }
+}
+
+// Add product to cart
+function addToCart(product, size) {
+    if (!size) {
+        alert('⚠️ Please select a size before adding to cart');
+        return false;
+    }
+    
+    let existingItem = cart.find(item => item.id === product.id && item.size === size);
+    if (existingItem) {
+        existingItem.quantity++;
+    } else {
+        cart.push({
+            id: product.id,
+            name: product.name,
+            price: product.price,
+            size: size,
+            quantity: 1
+        });
+    }
+    
+    saveCart();
+    alert(`✅ ${product.name} (${size}) added to cart!`);
+    return true;
+}
+
+// Render product gallery
+function renderGallery() {
+    const galleryContainer = document.getElementById('productGallery');
+    if (!galleryContainer) return;
+    
+    galleryContainer.innerHTML = '';
+    
+    products.forEach(product => {
+        const col = document.createElement('div');
+        col.className = 'col-md-3 col-sm-6';
+        col.innerHTML = `
+            <div class="card product-card h-100">
+                <img src="${product.image}" class="card-img-top product-img" alt="${product.name}" onerror="this.src='https://via.placeholder.com/300x300?text=Image+Not+Found'">
+                <div class="card-body">
+                    <h5 class="card-title">${product.name}</h5>
+                    <p class="card-text text-primary fw-bold">R${product.price}</p>
+                    <select class="size-select form-select">
+                        <option value="">Select Size</option>
+                        <option value="S">Small (S)</option>
+                        <option value="M">Medium (M)</option>
+                        <option value="L">Large (L)</option>
+                        <option value="XL">Extra Large (XL)</option>
+                    </select>
+                    <button class="btn btn-primary w-100 mt-2 add-to-cart-btn">Add to Cart 🛒</button>
+                </div>
+            </div>
+        `;
+        
+        galleryContainer.appendChild(col);
+        
+        const addBtn = col.querySelector('.add-to-cart-btn');
+        const sizeSelect = col.querySelector('.size-select');
+        addBtn.addEventListener('click', () => {
+            addToCart(product, sizeSelect.value);
+        });
+    });
+}
+
+// Initialize everything when page loads
+document.addEventListener('DOMContentLoaded', () => {
+    renderGallery();
+    updateCartDisplay();
+    
+    // Cart drawer controls
+    const cartIcon = document.getElementById('cartIcon');
+    const cartDrawer = document.getElementById('cartDrawer');
+    const closeCartBtn = document.getElementById('closeCartBtn');
+    const checkoutBtn = document.getElementById('checkoutBtn');
+    const clearCartBtn = document.getElementById('clearCartBtn');
+    
+    if (cartIcon && cartDrawer) {
+        cartIcon.addEventListener('click', (e) => {
+            e.preventDefault();
+            cartDrawer.classList.add('open');
+        });
+        
+        if (closeCartBtn) {
+            closeCartBtn.addEventListener('click', () => cartDrawer.classList.remove('open'));
+        }
+        
+        if (checkoutBtn) {
+            checkoutBtn.addEventListener('click', () => {
+                if (cart.length === 0) {
+                    alert('Your cart is empty! Add some items first.');
+                    return;
+                }
+                
+                let message = "🛍️ *RXBLSOCIETY ORDER* 🛍️\n\n";
+                message += "*My Order:*\n";
+                cart.forEach(item => {
+                    message += `• ${item.name} (Size: ${item.size}) - Quantity: ${item.quantity} = R${item.price * item.quantity}\n`;
+                });
+                let total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+                message += `\n*Total: R${total}*\n\n`;
+                message += "I would like to confirm my order. Please assist! 🙏";
+                
+                const whatsappUrl = `https://wa.me/277698858845?text=${encodeURIComponent(message)}`;
+                window.open(whatsappUrl, '_blank');
+            });
+        }
+        
+        if (clearCartBtn) {
+            clearCartBtn.addEventListener('click', () => {
+                if (confirm('Clear entire cart?')) {
+                    cart = [];
+                    saveCart();
+                    alert('Cart cleared!');
+                }
+            });
+        }
+    }
+    
+    // Scroll to top button
+    const scrollBtn = document.getElementById('scrollTopBtn');
+    if (scrollBtn) {
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) {
+                scrollBtn.style.display = 'block';
+            } else {
+                scrollBtn.style.display = 'none';
+            }
+        });
+        
+        scrollBtn.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    }
+    
+    // Logo download feature
+    const logo = document.querySelector('.navbar-brand img');
+    if (logo) {
+        logo.style.cursor = 'pointer';
+        logo.addEventListener('click', (e) => {
+            e.preventDefault();
+            const link = document.createElement('a');
+            link.href = 'pictures/logo.PNG';
+            link.download = 'Rxblsociety_Logo.png';
+            link.click();
+        });
+    }
+});
+</script>
 </body>
 </html>
