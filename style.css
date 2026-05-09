@@ -1,34 +1,93 @@
-@media(min-width:760px)
-{
-	.news-input{width:50%;}
+/* Resets & Base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
-*{
-	padding:0px;
-	margin:0px;
+body {
+    font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    background-color: #000;
+    color: #fff;
 }
-body{
-	background-color:#fff;
+/* Navbar */
+.navbar {
+    background-color: #000 !important;
 }
-
-
-.gallery{
-	padding:80px 50px;
-	
+.navbar-brand h1 {
+    font-size: 1.8rem;
+    letter-spacing: 2px;
 }
-img{
-	max-width:100%;
+.nav-link {
+    color: #fff !important;
+    font-weight: 500;
+    margin-left: 1rem;
 }
-
-.gallery img{
-	background:fff;
-	padding:15px;
-	width:100%;
-	box-shadow:0px;
-	
+.nav-link:hover, .active {
+    color: #ccc !important;
 }
-
-
-#gallery-popup .modal-img{
-	width:100%;
-	
+/* Hero */
+.hero {
+    background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('pictures/hero-bg.jpg');
+    background-size: cover;
+    background-position: center;
+}
+/* Cards */
+.card {
+    background-color: #111;
+    color: white;
+    border: none;
+    transition: transform 0.2s;
+}
+.card:hover {
+    transform: scale(1.02);
+}
+.card-img-top {
+    height: 250px;
+    object-fit: cover;
+}
+.price {
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: #f8b400;
+}
+/* Buttons */
+.btn-primary {
+    background-color: #f8b400;
+    border: none;
+    color: #000;
+    font-weight: bold;
+}
+.btn-primary:hover {
+    background-color: #e0a800;
+}
+.btn-dark {
+    background-color: #222;
+}
+/* Footer */
+footer {
+    background-color: #000;
+    border-top: 1px solid #222;
+}
+.up-arrow {
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 45px;
+    height: 45px;
+}
+/* Responsive */
+@media (max-width: 768px) {
+    .navbar-brand h1 {
+        font-size: 1.4rem;
+    }
+    .hero h1 {
+        font-size: 2rem;
+    }
+    .card-img-top {
+        height: 200px;
+    }
+    .request-form .container {
+        padding: 0 1rem;
+    }
 }
