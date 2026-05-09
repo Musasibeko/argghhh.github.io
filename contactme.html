@@ -6,7 +6,18 @@
     <title>Rxblsociety | Contact</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="style.css">
+    <style>
+        body { padding-top: 70px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        .contact-form { background: #f8f9fa; padding: 30px; border-radius: 10px; box-shadow: 0 0 20px rgba(0,0,0,0.1); }
+        #scrollTopBtn { position: fixed; bottom: 30px; right: 30px; display: none; z-index: 99; width: 50px; height: 50px; border-radius: 50%; background-color: #dc3545; color: white; border: none; }
+        .btn-primary { background-color: #ff6b6b; border-color: #ff6b6b; }
+        .btn-primary:hover { background-color: #ff5252; border-color: #ff5252; }
+        .cart-drawer { position: fixed; top: 0; right: -450px; width: 400px; height: 100%; background: white; box-shadow: -2px 0 5px rgba(0,0,0,0.2); transition: 0.3s; z-index: 1000; padding: 20px; overflow-y: auto; }
+        .cart-drawer.open { right: 0; }
+        .cart-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #ddd; padding-bottom: 10px; }
+        #closeCartBtn { background: none; border: none; font-size: 30px; cursor: pointer; }
+        .cart-item { display: flex; justify-content: space-between; margin: 15px 0; padding: 10px; border-bottom: 1px solid #eee; }
+    </style>
 </head>
 <body>
 
@@ -16,7 +27,7 @@
             <img src="pictures/logo.PNG" alt="Rxblsociety Logo" height="50">
             Rxblsociety
         </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-navbar="navbarNav">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
@@ -33,23 +44,41 @@
 <div class="container mt-5 pt-5">
     <div class="row">
         <div class="col-md-6 mx-auto">
-            <h2 class="text-center mb-4">Contact Us</h2>
-            <form id="contactForm">
-                <div class="mb-3">
-                    <label for="name" class="form-label">Name</label>
-                    <input type="text" class="form-control" id="name" required>
-                </div>
-                <div class="mb-3">
-                    <label for="email" class="form-label">Email</label>
-                    <input type="email" class="form-control" id="email" required>
-                </div>
-                <div class="mb-3">
-                    <label for="message" class="form-label">Message</label>
-                    <textarea class="form-control" id="message" rows="5" required></textarea>
-                </div>
-                <button type="submit" class="btn btn-primary w-100">Send via WhatsApp</button>
-            </form>
+            <div class="contact-form">
+                <h2 class="text-center mb-4">Contact Rxblsociety</h2>
+                <form id="contactForm">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Full Name</label>
+                        <input type="text" class="form-control" id="name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email Address</label>
+                        <input type="email" class="form-control" id="email" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="phone" class="form-label">Phone Number (optional)</label>
+                        <input type="tel" class="form-control" id="phone">
+                    </div>
+                    <div class="mb-3">
+                        <label for="message" class="form-label">Your Message</label>
+                        <textarea class="form-control" id="message" rows="5" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Send via WhatsApp</button>
+                </form>
+            </div>
         </div>
+    </div>
+</div>
+
+<div id="cartDrawer" class="cart-drawer">
+    <div class="cart-header">
+        <h4>Shopping Cart</h4>
+        <button id="closeCartBtn">&times;</button>
+    </div>
+    <div id="cartItems"></div>
+    <div class="cart-footer mt-3">
+        <p><strong>Total: R<span id="cartTotal">0</span></strong></p>
+        <button id="checkoutBtn" class="btn btn-success w-100">Order on WhatsApp</button>
     </div>
 </div>
 
@@ -65,9 +94,115 @@
     </div>
 </footer>
 
-<button id="scrollTopBtn" class="btn btn-danger rounded-circle"><i class="fas fa-arrow-up"></i></button>
+<button id="scrollTopBtn"><i class="fas fa-arrow-up"></i></button>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="style.js"></script>
+<script>
+let cart = JSON.parse(localStorage.getItem('rxblCart')) || [];
+
+function saveCart() {
+    localStorage.setItem('rxblCart', JSON.stringify(cart));
+    updateCartDisplay();
+}
+
+function updateCartDisplay() {
+    const cartCountSpan = document.getElementById('cartCount');
+    if (cartCountSpan) {
+        let totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+        cartCountSpan.innerText = totalItems;
+    }
+    
+    const cartItemsDiv = document.getElementById('cartItems');
+    const cartTotalSpan = document.getElementById('cartTotal');
+    
+    if (cartItemsDiv && cartTotalSpan) {
+        if (cart.length === 0) {
+            cartItemsDiv.innerHTML = '<p class="text-center text-muted">Your cart is empty</p>';
+            cartTotalSpan.innerText = '0';
+            return;
+        }
+        
+        let html = '';
+        let total = 0;
+        cart.forEach((item, index) => {
+            let itemTotal = item.price * item.quantity;
+            total += itemTotal;
+            html += `
+                <div class="cart-item">
+                    <div><strong>${item.name}</strong><br>${item.size} × ${item.quantity}<br>R${itemTotal}</div>
+                    <div><button class="btn btn-sm btn-danger remove-item" data-index="${index}">Remove</button></div>
+                </div>
+            `;
+        });
+        cartItemsDiv.innerHTML = html;
+        cartTotalSpan.innerText = total;
+        
+        document.querySelectorAll('.remove-item').forEach(btn => {
+            btn.addEventListener('click', function() {
+                let idx = parseInt(this.getAttribute('data-index'));
+                cart.splice(idx, 1);
+                saveCart();
+            });
+        });
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    updateCartDisplay();
+    
+    const cartIcon = document.getElementById('cartIcon');
+    const cartDrawer = document.getElementById('cartDrawer');
+    const closeCartBtn = document.getElementById('closeCartBtn');
+    const checkoutBtn = document.getElementById('checkoutBtn');
+    const scrollBtn = document.getElementById('scrollTopBtn');
+    
+    if (cartIcon && cartDrawer) {
+        cartIcon.addEventListener('click', (e) => {
+            e.preventDefault();
+            cartDrawer.classList.add('open');
+        });
+        if (closeCartBtn) {
+            closeCartBtn.addEventListener('click', () => cartDrawer.classList.remove('open'));
+        }
+        if (checkoutBtn) {
+            checkoutBtn.addEventListener('click', () => {
+                if (cart.length === 0) {
+                    alert('Cart is empty!');
+                    return;
+                }
+                let message = "🛍️ RXBLSOCIETY ORDER\n\n";
+                cart.forEach(item => {
+                    message += `${item.name} (${item.size}) x${item.quantity} = R${item.price * item.quantity}\n`;
+                });
+                let total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+                message += `\nTotal: R${total}`;
+                window.open(`https://wa.me/277698858845?text=${encodeURIComponent(message)}`, '_blank');
+            });
+        }
+    }
+    
+    if (scrollBtn) {
+        window.addEventListener('scroll', () => {
+            scrollBtn.style.display = window.scrollY > 300 ? 'block' : 'none';
+        });
+        scrollBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+    }
+    
+    const contactForm = document.getElementById('contactForm');
+    if (contactForm) {
+        contactForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            let name = document.getElementById('name').value;
+            let email = document.getElementById('email').value;
+            let phone = document.getElementById('phone').value;
+            let message = document.getElementById('message').value;
+            let whatsappMsg = `*New Contact Form Message*\n\nName: ${name}\nEmail: ${email}\nPhone: ${phone}\n\nMessage:\n${message}`;
+            window.open(`https://wa.me/277698858845?text=${encodeURIComponent(whatsappMsg)}`, '_blank');
+            alert('Message sent! We will respond shortly.');
+            contactForm.reset();
+        });
+    }
+});
+</script>
 </body>
 </html>
